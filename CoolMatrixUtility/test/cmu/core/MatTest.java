@@ -62,5 +62,36 @@ public class MatTest {
     	 org.junit.Assert.assertArrayEquals("transpose failure on 2*2 matrix", expected, m.data, 0.00001);
     }
     
- 
+	/*
+	 * isEmpty Test
+	 */
+    @Test
+    public void TestIsEmpty_Empty_matrix() {
+    	double[] data = {};
+    	Mat mat = new Mat(0, 0, data);
+    	boolean state = mat.isEmpty();
+    	boolean expected = true;
+    	 org.junit.Assert.assertEquals("isEmpty() failure on empty matrix", expected, state);
+    }	
+	
+    @Test
+    public void TestIsEmpty_NoEmpty_matrix() {
+    	double[] data = {1};
+    	Mat mat = new Mat(1, 1, data);
+    	boolean state = mat.isEmpty();
+    	boolean expected = false;
+    	 org.junit.Assert.assertEquals("isEmpty() failure on non-empty matrix", expected, state);
+    }	
+	
+	/*
+	 * at(x,y) Test
+	 */
+    @Test
+    public void TestAt_test1() {
+    	double[] data = {1,2,3,4};
+    	Mat mat = new Mat(2, 2, data);
+    	double m = mat.at(1,1);
+    	double expected = 4;
+    	 org.junit.Assert.assertEquals("at() failure on 2*2 matrix", expected, m, 0.0000001);
+    }
 }

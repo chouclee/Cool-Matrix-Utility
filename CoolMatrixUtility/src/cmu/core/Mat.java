@@ -45,7 +45,7 @@ public class Mat {
 	
 	
 	/**
-	 * Allocate memory for matrix
+	 * Allocate memory, initialize elements from a given matrix
 	 * @param dims
 	 * @param rows
 	 * @param cols
@@ -95,24 +95,47 @@ public class Mat {
 	 * Computes a dot-product of two vectors.
 	 * @param m
 	 * @return
+	 * @throws IllegalAccessException 
 	 */
-	//public Mat<T> dot(Mat<T> m) {
-		
-	//}
+	public double dot(Mat m) throws IllegalAccessException {
+		if (!this.isEmpty() && !m.isEmpty()) {
+			if (this.data.length != m.data.length) {
+				throw new IllegalAccessException("Matrices size should be same");
+			}
+			double sum = 0;
+			for (int i = 0; i < this.data.length; i++) {
+				sum += this.data[i] * m.data[i];
+			}
+			return sum;
+		}
+		else {
+			throw new IllegalAccessException("Matrix has not been initialized"); 
+		}
+	}
 	
 	/**
 	 * Returns true if the matrix has no elements
 	 * @return
 	 */
-	//public boolean empty() {
-		
-	//}
+	public boolean isEmpty() {
+		if (this.data == null || this.data.length == 0)
+			return true;
+		return false;
+	}
 	
 	/**
 	 * Returns a reference to the specified matrix element.
 	 * @return
 	 */
-	//public T at() {
-		
-	//}
+	public double at(int i, int j) {
+		if (!this.isEmpty()) {
+			int idx = i * this.rows + j;
+			if (idx >= this.data.length) {
+				throw new ArrayIndexOutOfBoundsException(
+						"matrix index out of bounds at " + i + ", " + j );
+			}
+			return this.data[idx];
+		} 
+		return Double.MIN_VALUE;
+	}
 }
