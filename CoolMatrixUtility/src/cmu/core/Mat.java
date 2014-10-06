@@ -7,6 +7,24 @@ public class Mat<T extends Number> {
 	
 	T[] data; // matrix data
 	
+	public Mat(int rows, int cols) {
+		this.rows = rows;
+		this.cols = cols;
+	}
+	
+	/**
+	 * Allocate memory for matrix
+	 * @param dims
+	 * @param rows
+	 * @param cols
+	 */
+	public void create(int dims, int rows, int cols) {
+		@SuppressWarnings("unchecked")
+		final T[] data = (T[]) new Object[rows * cols];
+		this.data = data;
+		this.dims = dims;
+	}
+	
 	/**
 	 * Transpose a matrix.
 	 * This method performs matrix transposition not in the original matrix but
