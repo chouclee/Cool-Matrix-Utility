@@ -57,6 +57,31 @@ public class MatOp {
 		}
 		return src1;
 	}
+	
+	/**
+	 * Calculates the sum of a scaled array and another array.
+	 * 
+	 * @param src1
+	 *            Mat type matrix
+	 * @param alpha
+	 *            scale factor for first matrix
+	 * @param src2
+	 *            Mat type matrix
+	 * @return
+	 */
+	public static Mat scaleAdd(Mat src1, double alpha, Mat src2) {
+		if (src1.isEmpty()) {
+			return src2;
+		}
+		if (src2.isEmpty()) {
+			return src1.mul(alpha);
+		}
+		assert (src1.rows == src2.rows && src1.cols == src2.cols);
+		for (int i = 0; i < src1.data.length; i++) {
+			src1.data[i] = src1.data[i] * alpha + src2.data[i];
+		}
+		return src1;
+	}
 
 	/**
 	 * Enumerate supported norm operation type
@@ -81,7 +106,7 @@ public class MatOp {
 		} else {
 			double sum = 0.0;
 			switch (normType) {
-			// L2 norm, get sum of squared of all elements, return the squared
+			// L1 norm, get absolute value of all elements, return the squared
 			// root of sum
 			case NORM_L1: {
 				for (int i = 0; i < src.data.length; i++) {
@@ -105,5 +130,55 @@ public class MatOp {
 			}
 			return sum;
 		}
+	}
+	
+	/**
+	 * Calculate distance between two vectors.
+	 * For matrix, this is equal to square root of SSE (Sum of Squared Error)
+	 * @param src
+	 *            input matrix 1.
+	 * @param src 
+	 * 			  input matrix 2.          
+	 * @param normType
+	 *            Specify the norm type, which can be NormType.NORM_L1 or
+	 *            NormType.NORM_L2 :
+	 * @return
+	 */
+	public static double dist(Mat src1, Mat src2, NormType normType) {
+		assert(src1.cols == src2.cols && src1.rows == src2.rows);
+		if (src1.isEmpty()) {            // is this proper way?
+			return norm(src2, normType); // if src1 is empty , return norm of src2
+		}
+		if (src2.isEmpty()) {			 // is this proper way?
+			return norm(src1, normType); // if src1 is empty , return norm of src2
+		}
+		double sum = 0.0;
+		double diff;
+		switch (normType) {
+			// L1 norm,  get absolute value of all elements, return the squared
+			// root of sum
+			case NORM_L1: {
+				for (int i = 0; i < src1.data.length; i++) {
+					diff = src1.data[i] - src2.data[i];
+					sum += diff > 0 ? diff : -diff;
+				}
+				break;
+			}
+
+			// L2 norm, get sum of squared of all elements, return the squared
+			// root of sum
+			case NORM_L2: {
+				for (int i = 0; i < src1.data.length; i++) {
+					diff = src1.data[i] - src2.data[i];
+					sum += diff * diff;
+				}
+				sum = Math.sqrt(sum);
+				break;
+			}
+
+			default:
+				break;
+		}
+		return sum;
 	}
 }

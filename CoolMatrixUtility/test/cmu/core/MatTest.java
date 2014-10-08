@@ -83,4 +83,18 @@ public class MatTest {
     	double expected = 4;
     	 org.junit.Assert.assertEquals("at() failure on 2*2 matrix", expected, m, 0.0000001);
     }
+    
+    // mul
+    @Test
+    public void TestMul_2by2() {
+    	double[] data = new double[4];
+    	for (int i = 0; i < 4; i++) {
+    		data[i] = i + 1;
+    	}
+    	Mat mat = new Mat(2, 2, data);
+    	Mat m = mat.mul(2);
+    	double[] expected = 
+    		   {2, 4, 6, 8};
+    	 org.junit.Assert.assertArrayEquals("mul failure on 2*2 matrix", expected, m.data, 0.00001);
+    }
 }

@@ -2,8 +2,8 @@ package cmu.core;
 
 public class Mat {
 
-	int dims; // number of dimensions
-	int rows, cols; // the number of rows and columns
+	public int dims; // number of dimensions
+	public int rows, cols; // the number of rows and columns
 	public double[] data; // matrix data
 
 	/**
@@ -101,14 +101,17 @@ public class Mat {
 	}
 
 	/**
-	 * Performs an element-wise multiplication or division of the two matrices.
+	 * Performs an element-wise multiplication or division.
 	 * 
 	 * @param InputMat
 	 * @return
 	 */
-	// public Mat<T> mul(Mat<T> m) {
-
-	// }
+	public Mat mul(double alpha) {
+		for (int i = 0; i < this.data.length; i++) {
+			this.data[i] *= alpha;
+		}
+		return this;
+	}
 
 	/**
 	 * Computes a dot-product of two vectors.
@@ -162,6 +165,18 @@ public class Mat {
 		}
 		return Double.MIN_VALUE;
 	}
+	
+/*
+	public Mat row(int i) {
+		if (!this.isEmpty()) {
+			int idx = i * this.rows;
+			assert (idx < this.data.length);
+			Mat ithRow = new Mat(1, this.cols);
+			ithRow.data = this.data[idx];
+			return ithRow;
+		}
+		return null;
+	}*/
 
 	/**
 	 * Clone the matrix Deep copy
