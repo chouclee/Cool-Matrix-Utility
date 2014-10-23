@@ -5,7 +5,7 @@ import cmu.core.Mat;
 public class ConcatDiagonal implements Concatenation {
 
 	@Override
-	public Mat concat(Mat[] SplitedMatrix) {
+	public Mat concat(Mat[] Diagonal) {
 		// TODO Auto-generated method stub
 		return null;
 	}

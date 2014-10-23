@@ -15,10 +15,10 @@ public class MatOp {
 		 * Naive implementation. No optimization.
 		 */
 		assert (src1.cols == src2.rows);
-		Mat tSrc2 = src2.t(); // transpose matrix B, this will improve Cache
+		//Mat tSrc2 = src2.t(); // transpose matrix B, this will improve Cache
 								// performance
 		Mat dst = new Mat(src1.rows, src2.cols);
-		dst.create();
+		/*dst.create();
 		int rowIdx, colIdx, startIdxSrc1, startIdxSrc2;
 		double sum = 0, j = 0;
 		for (int i = 0; i < dst.data.length; i++) {
@@ -31,7 +31,9 @@ public class MatOp {
 				sum += src1.data[startIdxSrc1++] * tSrc2.data[startIdxSrc2++];
 			}
 			dst.data[i] = sum;
-		}
+		}*/
+		src1.inner.mult(src2.inner,dst.inner);
+		dst.data = dst.inner.getData();
 		return dst;
 	}
 
