@@ -7,7 +7,7 @@ public class Mat {
 	public int rows, cols; // the number of rows and columns
 	public double[] data; // matrix data
 	
-	private DenseMatrix inner; // Wrapper
+	public DenseMatrix inner; // Wrapper
 
 	/**
 	 * Matrix Constructor Shallow copy of another matrix
@@ -35,6 +35,8 @@ public class Mat {
 	public Mat(int rows, int cols) {
 		this.rows = rows;
 		this.cols = cols;
+		this.inner = new DenseMatrix(rows, cols);
+		this.data = this.inner.getData();
 	}
 
 	/**
@@ -118,9 +120,11 @@ public class Mat {
 	 * @return
 	 */
 	public Mat mul(double alpha) {
-		for (int i = 0; i < this.data.length; i++) {
+		/*for (int i = 0; i < this.data.length; i++) {
 			this.data[i] *= alpha;
-		}
+		}*/
+		this.inner = (DenseMatrix) this.inner.scale(alpha);
+		this.data = this.inner.getData();
 		return this;
 	}
 
