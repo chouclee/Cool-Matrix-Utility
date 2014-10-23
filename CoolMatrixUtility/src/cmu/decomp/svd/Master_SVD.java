@@ -12,7 +12,7 @@ public class Master_SVD {
    private static double _eps = 1e-7;
    private static int _MAX_ITER = 500;
    private static double _alpha[];
-   private Aggregater _ag;
+   private Aggregator _ag;
    private Spliter _sp;
    private int _N;
    private Slave_SVD _ss[];

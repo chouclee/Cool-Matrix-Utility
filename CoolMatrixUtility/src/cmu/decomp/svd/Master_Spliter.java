@@ -15,6 +15,7 @@ import cmu.core.*;
 public class Master_Spliter implements Spliter {
 	
 	public Mat src;    					 // matrix for SVD
+	public DenseMatrix 
 	public ArrayList<Slave> slaves; 	 // use arraylist to store Slave objects
 	public int subNum;    				 // number of parts to split
 	public int currBegin;  				 // index of begin collums ready to send
