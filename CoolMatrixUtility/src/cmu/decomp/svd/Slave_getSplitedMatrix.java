@@ -11,7 +11,7 @@ import cmu.core.Mat;
  * @param currBegin
  * 		     end index of original matrix.
  */
-public class Slave_Spliter implements Spliter {
+public class Slave_getSplitedMatrix {
 	public Mat src;    					 // original matrix for SVD
 	public Mat m;						 // new constructed matrix for SVD on slave
 	public Master_Spliter master;		 // master
@@ -26,7 +26,7 @@ public class Slave_Spliter implements Spliter {
 	 * @param slave
 	 *            slave number.
 	 */
-	public Slave_Spliter (Mat matrix, Master_Spliter master) {
+	public Slave_getSplitedMatrix (Mat matrix, Master_Spliter master) {
 		this.src = matrix;
 		this.m = null;
 		this.master = master;
@@ -45,7 +45,7 @@ public class Slave_Spliter implements Spliter {
 	 * @param end
 	 * 			  end index to reconstruct
 	 */
-	public Slave_Spliter (Mat matrix, Master_Spliter master, int begin, int end) {
+	public Slave_getSplitedMatrix (Mat matrix, Master_Spliter master, int begin, int end) {
 		this.src = matrix;
 		this.m = null;
 		this.master = master;
@@ -68,8 +68,8 @@ public class Slave_Spliter implements Spliter {
 	 *            object of Master_Spliter, receive the index from master
 	 */
 	public boolean receive () {
-		this.currBegin = this.master.currBegin;
-		this.currEnd = this.master.currEnd;
+		this.currBegin = this.master.beginToSlave;
+		this.currEnd = this.master.endToSlave;
 		return false;
 	}
 	/**
