@@ -9,7 +9,7 @@ import org.junit.runners.Parameterized;
 
 @RunWith(Parameterized.class)
 public class MatMulTimeTest {
-	private static int size = 1000;
+	private static int size = 3000;
 	private static double[] data;
 	private static Mat M1;
 	private static Mat M2;

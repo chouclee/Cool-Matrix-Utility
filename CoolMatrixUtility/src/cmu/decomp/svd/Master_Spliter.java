@@ -15,28 +15,32 @@ import cmu.core.*;
 public class Master_Spliter implements Spliter {
 	
 	public Mat src;    					 // matrix for SVD
-	public DenseMatrix 
-	public ArrayList<Slave> slaves; 	 // use arraylist to store Slave objects
+	public Slave slave; 	 // use arraylist to store Slave objects
 	public int subNum;    				 // number of parts to split
-	public int currBegin;  				 // index of begin collums ready to send
-	public int currEnd;    				 // index of end collums ready to send
-	
+	//public int currBegin;  				 // index of begin collums ready to send
+	//public int currEnd;    				 // index of end collums ready to send
+	public int beginToSlave;
+	public int endToSlave;
+	public int count;		//Assume the first slave count as 1;
 	/**
 	 * Master_Splitter Constructor Initialize parameters.
 	 * 
 	 * @param matrix
 	 *            the original matrix to decompose.
-	 * @param slaves
-	 *            set of different slaves
+	 * @param slave
+	 *            slave to communicate
 	 * @param subNum
 	 *            number of parts to split
 	 */
-	public Master_Spliter (Mat matrix,ArrayList<Slave> slaves, int subNum) {
+	public Master_Spliter (Mat matrix,Slave slave, int subNum, int count) {
 		this.src = matrix;
-		this.slaves = slaves;
+		this.slave = slave;
 		this.subNum = subNum;
-		this.currBegin = 0;
-		this.currEnd = -1;
+		//this.currBegin = 0;
+		//this.currEnd = -1;
+		this.beginToSlave = -1;
+		this.beginToSlave = 0;
+		this.count = count;
 	}
 	
 	/**
@@ -53,12 +57,12 @@ public class Master_Spliter implements Spliter {
 	 * @param end
 	 * 			  end index to split         
 	 */
-	public Master_Spliter (Mat matrix,ArrayList<Slave> slaves, int subNum, int begin, int end) {
+	public Master_Spliter (Mat matrix, Slave slave, int subNum, int begin, int end) {
 		this.src = matrix;
-		this.slaves = slaves;
+		this.slave = slave;
 		this.subNum = subNum;
-		this.currBegin = begin;
-		this.currEnd = end;
+		this.beginToSlave = begin;
+		this.endToSlave = end;
 	}
 	
 	/**
@@ -67,9 +71,9 @@ public class Master_Spliter implements Spliter {
 	 * @param slave
 	 *            object of Slave
 	 */
-	public boolean isReady (Slave slave) {
+	/*public boolean isReady (Slave slave) {
 		return true;
-	}
+	}*/
 	
 	/**
 	 * send currBegin and currEnd to slave, check if one slave accept successfully
@@ -77,18 +81,18 @@ public class Master_Spliter implements Spliter {
 	 * @param slave
 	 *            object of Slave
 	 */
-	public boolean send (Slave slave) {
+	/*public boolean send (Slave slave) {
 		if (split()) {
 			return true;	
 		} else {
 			return false;
 		}
-	}
+	}*/
 	/**
 	 * set the begin and end index of a subpart of matrix for split, auto
 	 * 
 	 */
-	public boolean split () {
+	/*public boolean split () {
 		int numOfCols = (int) Math.ceil ( (double) this.src.cols / this.subNum);
 		int splitCols = numOfCols;
 		if (this.currBegin + numOfCols > this.src.cols) {
@@ -97,6 +101,13 @@ public class Master_Spliter implements Spliter {
 		this.currBegin = this.currEnd + 1;
 		this.currEnd = this.currBegin + splitCols -1;
 		return true;
+	}*/
+	
+	
+	public void split(){
+		int sizeOfSubPart = (int) Math.ceil ( (double) src.cols * src.rows / subNum);
+		beginToSlave = count * sizeOfSubPart - 1;
+		endToSlave = count * sizeOfSubPart - 1 + sizeOfSubPart;
 	}
 	
 	/**
@@ -105,12 +116,17 @@ public class Master_Spliter implements Spliter {
 	 */
 	public boolean split (int begin, int end) {
 		if (begin >= 0 && end < this.src.cols) {
-			this.currBegin = begin;
-			this.currEnd = end;
+			this.beginToSlave = begin;
+			this.endToSlave = end;
 			return true;
 		} else {
 			return false;
 		}
+	}
+	
+	
+	public void aggregator(Slave slave){
+		
 	}
 	
 }
