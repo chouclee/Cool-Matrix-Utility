@@ -68,8 +68,8 @@ public class Slave_getSplitedMatrix {
 	 *            object of Master_Spliter, receive the index from master
 	 */
 	public boolean receive () {
-		//this.currBegin = this.master.currBegin;
-		//this.currEnd = this.master.currEnd;
+		this.currBegin = this.master.beginToSlave;
+		this.currEnd = this.master.endToSlave;
 		return false;
 	}
 	/**

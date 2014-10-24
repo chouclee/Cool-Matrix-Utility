@@ -19,8 +19,8 @@ public class Master_Spliter {
 	public int subNum;    				 // number of parts to split
 	//public int currBegin;  				 // index of begin collums ready to send
 	//public int currEnd;    				 // index of end collums ready to send
-	public int beginToSlave;
-	public int endToSlave;
+	public int beginToSlave;				 // begin index of splited data to slave
+	public int endToSlave;                   // end index of splited data to slave
 	public int count;		//Assume the first slave count as 1;
 	/**
 	 * Master_Splitter Constructor Initialize parameters.
@@ -103,7 +103,10 @@ public class Master_Spliter {
 		return true;
 	}*/
 	
-	
+	/**
+	 * origin data from matrix is splited equally to every slave.
+	 * 
+	 */
 	public void split(){
 		int sizeOfSubPart = (int) Math.ceil ( (double) src.cols * src.rows / subNum);
 		beginToSlave = count * sizeOfSubPart - 1;
