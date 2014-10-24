@@ -12,7 +12,7 @@ import cmu.core.*;
  * @param NumberOfSlaves
  * 		     Number of Slaves in distributed system.
  */
-public class Master_Spliter implements Spliter {
+public class Master_Spliter {
 	
 	public Mat src;    					 // matrix for SVD
 	public Slave slave; 	 // use arraylist to store Slave objects
