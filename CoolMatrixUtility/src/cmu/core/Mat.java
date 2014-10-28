@@ -273,4 +273,8 @@ public class Mat {
 	public Mat clone() {
 		return new Mat(this.rows, this.cols, this.data.clone());
 	}
+	
+	public void display() {
+		System.out.print(this.inner.toString());
+	}
 }

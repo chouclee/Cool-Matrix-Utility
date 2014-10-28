@@ -21,6 +21,9 @@ public class Slave {
 	}
 	
 	public static void main (String[] args) {
+		/**
+		 * How to store matrix in the computer still needs to alter.
+		 */
 		double[] test = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
 		int rows = 4;
 		int cols = 4;
@@ -35,7 +38,6 @@ public class Slave {
 		tag = commu.pullTag();
 		split.setTag(tag);
 		S = split.construct();
-//		svd.setS(S);
 		L = commu.pullL();
 		svd.setL(L);
 		L = svd.Slave_UpdateL(S);
