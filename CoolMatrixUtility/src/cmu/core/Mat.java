@@ -96,6 +96,34 @@ public class Mat {
 	public Mat t() {
 		/*/*
 		 * Slow version, no optimization
+		 */
+		/*Mat t = new Mat(this.cols, this.rows);
+		t.create();
+		int idx = 0;
+		int colIdx, rowIdx;
+		for (int i = 0; i < data.length; i++) {
+			rowIdx = i / this.cols;   //t.cols
+			colIdx = i % this.cols;	  // t.cols
+			idx = colIdx * this.rows + rowIdx;   //t.rows
+			t.data[idx] = this.data[i];
+		} */
+		Mat t = new Mat(this.cols, this.rows);
+		t.inner = (DenseMatrix) this.inner.transpose(t.inner);
+		t.data = t.inner.getData();
+		/* for (int i =0 ; i < t.inner.getData().length; i++){
+			 
+			 if (i%4 == 0){
+				 System.out.println();
+			 }
+			 System.out.print(t.inner.getData()[i] + " ");
+		 }
+ System.out.println();*/
+
+		return t;
+	}
+	public Mat stransLmul(Mat S, Mat L) {
+		/*/*
+		 * Slow version, no optimization
 		 *
 		Mat t = new Mat(this.cols, this.rows);
 		t.create();
@@ -107,10 +135,54 @@ public class Mat {
 			idx = colIdx * t.rows + rowIdx;
 			t.data[idx] = this.data[i];
 		}*/
-		Mat t = new Mat(this.cols, this.rows);
-		t.inner = (DenseMatrix) this.inner.transpose();
+	/*	Mat t = new Mat(S.cols, L.cols);
+	
+		
+	 for (int i =0 ; i < S.inner.getData().length; i++){
+			 
+			 if (i%S.cols == 0){
+				 System.out.println();
+			 }
+			 System.out.print(S.inner.getData()[i] + " ");
+		 }
+	 
+	 for (int i =0 ; i < L.inner.getData().length; i++){
+		 
+		 if (i%L.cols == 0){
+			 System.out.println();
+		 }
+		 System.out.print(L.inner.getData()[i] + " ");
+	 }
+		//double s1[] = {1,0};
+	//	double s2[] = {0,0};
+		S.inner.transAmult(L.inner, t.inner);
+	
 		t.data = t.inner.getData();
-		return t;
+	/*	(new Mat(1,2,s1)).inner.transAmult((new Mat(1,2,s1)).inner,t.inner);
+		t.data = t.inner.getData();*/
+	/*	 for (int i =0 ; i < t.inner.getData().length; i++){
+			 
+			 if (i%2 == 0){
+				 System.out.println();
+			 }
+			 System.out.print(t.inner.getData()[i] + " ");
+		 }
+ System.out.println();*/
+		return null;
+	
+	}
+	
+	public Mat colRange(int i, int j) {
+		assert(i >= 0 && j < this.cols && i <= j);
+		Mat result = new Mat(this.rows, j - i + 1);
+		
+		double[] src = new double[this.rows * (j - i + 1)];
+		for (int m = 0; m < (j-i+1) * this.rows; m++) {
+			src[m] = this.data[m + i *this.rows];
+		}
+		result.create(src);
+		result.data = result.inner.getData();
+		return result;
 	}
 
 	/**
@@ -135,7 +207,7 @@ public class Mat {
 	 * @return
 	 * @throws IllegalAccessException
 	 */
-	public double dot(Mat src) throws IllegalAccessException {
+	/*public double dot(Mat src) throws IllegalAccessException {
 		if (!this.isEmpty() && !src.isEmpty()) {
 			if (this.data.length != src.data.length) {
 				throw new IllegalAccessException("Matrices size should be same");
@@ -148,7 +220,7 @@ public class Mat {
 		} else {
 			throw new IllegalAccessException("Matrix has not been initialized");
 		}
-	}
+	}*/
 
 	/**
 	 * Check whether this matrix has elements or not.
@@ -199,6 +271,6 @@ public class Mat {
 	 * @return A new matrix which is identical to the orginal one.
 	 */
 	public Mat clone() {
-		return new Mat(this.rows, this.cols, this.data);
+		return new Mat(this.rows, this.cols, this.data.clone());
 	}
 }

@@ -1,6 +1,7 @@
 package cmu.decomp.svd;
 
 import cmu.core.Mat;
+import cmu.help.Tag;
 
 /**
  * Slave_Spliter is used to reconstruct the sub matrix on slaves.. 
@@ -13,84 +14,40 @@ import cmu.core.Mat;
  */
 public class Slave_getSplitedMatrix {
 	public Mat src;    					 // original matrix for SVD
-	public Mat m;						 // new constructed matrix for SVD on slave
-	public Master_Spliter master;		 // master
-	public int currBegin;  				 // index of begin collums to reconstruct
-	public int currEnd;    				 // index of end collums to reconstruct
+	public Tag tag;
 	
 	/**
 	 * Master_Splitter Constructor Initialize parameters.
 	 * 
 	 * @param matrix
 	 *            the original matrix to decompose.
-	 * @param slave
-	 *            slave number.
 	 */
-	public Slave_getSplitedMatrix (Mat matrix, Master_Spliter master) {
+	public Slave_getSplitedMatrix (Mat matrix) {
 		this.src = matrix;
-		this.m = null;
-		this.master = master;
-		this.currBegin = 0;
-		this.currEnd = 0;
-	}
-	/**
-	 * Master_Splitter Constructor Initialize parameters.
-	 * 
-	 * @param matrix
-	 *            the original matrix to decompose.
-	 * @param slave
-	 *            slave number.
-	 * @param begin
-	 * 			  begin index to reconstruct  
-	 * @param end
-	 * 			  end index to reconstruct
-	 */
-	public Slave_getSplitedMatrix (Mat matrix, Master_Spliter master, int begin, int end) {
-		this.src = matrix;
-		this.m = null;
-		this.master = master;
-		this.currBegin = begin;
-		this.currEnd = end;
 	}
 	
-	/**
-	 * check if the slave is ready to accept
-	 * 
-	 */
-	public boolean isReady () {
-		return true;
+	public void setTag (Tag tag) {
+		this.tag = tag;
 	}
 	
-	/**
-	 * set currBegin and currEnd, check if the slave accept successfully
-	 * 
-	 * @param master
-	 *            object of Master_Spliter, receive the index from master
-	 */
-	public boolean receive () {
-		this.currBegin = this.master.beginToSlave;
-		this.currEnd = this.master.endToSlave;
-		return false;
-	}
 	/**
 	 * reconstruct a submatrix of matrix on master
 	 * 
 	 */
-	public boolean construct(){
-		if (!receive()) {
-			return false;
-		}
-		int cols = this.currEnd - this.currBegin + 1;
+	public Mat construct(){
+		int begin = this.tag.getBegin();
+		int end = this.tag.getEnd();
+		System.out.println(begin +"   " + end);
+		int cols = end - begin + 1;
 		int rows = this.src.rows;
 		Mat temp = new Mat(rows, cols);
 		temp.create();
 		for(int j = 0; j < cols * rows; j++){
 			int r = j / cols;
 			int c = j % cols;
-			temp.data[j] = this.src.data[this.currBegin + r * rows + c];
+			temp.data[j] = this.src.data[begin + r * rows + c];
 		}
-		this.m = temp;
-		return true;
+		return temp;
 	}
 	
 }
